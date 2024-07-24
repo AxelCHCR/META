@@ -1,0 +1,33 @@
+@import './variables.css';
+@import './common.css';
+@import './styles.css';
+
+html {
+  height: 100%;
+  box-sizing: border-box; /* Force browser to use any border, padding or margin to calculate the size of elements */
+  font-size: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: var(--font-family-main);
+  color: var(--grey-darker);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin-bottom: 6px;
+  padding: 0;
+}

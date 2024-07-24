@@ -1,12 +1,21 @@
+const addBudget = `
+    <div id=addBudgetContainer>
+    <h3>Add Budget</h3>
+    <input type="text" id="budget" name="budget">
+    <button>Holiii</button>
+    </div>
+    `;
 
-// create HTML using template literals
-let content = `
-<h3>This is a heading</h3>
-<p>this content is meant to be added to the shadow DOM</p>
+const addExpense = `
+    <div>
+        <h3>Add Expense<h3/>
+    <div/>
 `
-
-
-let mainContainer = document.getElementById("mainContainer")
+let mainContent = document.getElementById("mainContent")
+console.log(mainContent)
+const budgetElement = document.createElement('span') //TODO: guardar estas lineas de codigo para despues, ya que son las que resuelven el tema de agregar elementos a otros divs
+budgetElement.innerHTML = addBudget;
+mainContent.append(budgetElement)
 //let title = document.getElementById("").append(content)
 
 // select the element with a class called root
