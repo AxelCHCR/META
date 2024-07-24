@@ -87,6 +87,10 @@ label{
     #mainContent {
         display: flex;
         flex-flow: column;
-        
+
     }
   }
+
+.amountLabel{
+    color: var(--ghost-white);
+}
