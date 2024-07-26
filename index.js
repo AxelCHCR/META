@@ -1,3 +1,21 @@
+//Data structure (JSON). It contains the budget, the categories and the expenses used in META application
+let data = {
+    budget: { amount: 0, currency: 'USD' },
+    categories: [], 
+    expenses: []
+  };
+//Function that handles the load of data to GUI
+function loadData() {
+    const savedData = localStorage.getItem('expenseTrackerData');
+    if (savedData) {
+      data = JSON.parse(savedData);
+      //updateUI(); Future function
+    }
+  }
+// Function that handles the save of data from GUI
+function saveData() {
+    localStorage.setItem('expenseTrackerData', JSON.stringify(data));
+  }
 const addBudget = `
     <div class=additionContainer>
     <h3>Add Budget</h3>
