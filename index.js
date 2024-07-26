@@ -104,6 +104,71 @@ function deleteCategory(index) {
       `;
     });
   }
+// **********************Budget Edit**********************
+// Open Edit Modal
+function openEditModal(index) {
+    const expense = data.expenses[index];
+    document.getElementById('editExpenseAmount').value = expense.amount;
+    document.getElementById('editExpenseDate').value = expense.date;
+    document.getElementById('editExpenseCurrency').value = expense.currency;
+    document.getElementById('editExpenseCategory').value = expense.category;
+    document.getElementById('editExpenseModal').style.display = 'block';
+  
+    document.getElementById('saveEditBtn').onclick = function () {
+      saveEdit(index);
+    };
+  }
+
+// Save Edit
+function saveEdit(index) {
+    const newAmount = parseFloat(document.getElementById('editExpenseAmount').value);
+    const newDate = document.getElementById('editExpenseDate').value;
+    const newCurrency = document.getElementById('editExpenseCurrency').value;
+    const newCategory = document.getElementById('editExpenseCategory').value;
+  
+    if (newAmount > 0 && newDate && newCurrency && newCategory) {
+      data.expenses[index] = { amount: newAmount, date: newDate, currency: newCurrency, category: newCategory };
+      saveData();
+      updateUI();
+      closeModal();
+    } else {
+      alert('Please fill in all expense details correctly.');
+    }
+  }
+// Close Modal
+function closeModal() {
+    document.getElementById('editExpenseModal').style.display = 'none';
+  }
+  
+  document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+
+
+function updateExpenseSummary() {
+    const summaryContent = document.getElementById('summaryContent');
+    const categorySums = {};
+    let totalExpenses = 0;
+  
+    data.expenses.forEach(expense => {
+      if (!categorySums[expense.category]) {
+        categorySums[expense.category] = 0;
+      }
+      categorySums[expense.category] += expense.amount;
+      totalExpenses += expense.amount;
+    });
+  
+    let summaryHTML = `<p>Total Expenses: ${totalExpenses} ${data.budget.currency}</p>`;
+    summaryHTML += '<ul>';
+    for (const [category, sum] of Object.entries(categorySums)) {
+      summaryHTML += `<li>${category}: ${sum} ${data.budget.currency}</li>`;
+    }
+    summaryHTML += '</ul>';
+  
+    if (totalExpenses > data.budget.amount) {
+      summaryHTML += '<p style="color: red;">Warning: Budget exceeded!</p>';
+    }
+  
+    summaryContent.innerHTML = summaryHTML;
+  }
 const addBudget = `
     <div class=additionContainer>
     <h3>Add Budget</h3>
