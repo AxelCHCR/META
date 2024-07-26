@@ -1,20 +1,58 @@
 //Data structure (JSON). It contains the budget, the categories and the expenses used in META application
 let data = {
     budget: { amount: 0, currency: 'USD' },
-    categories: [], 
+    categories: [],
     expenses: []
-  };
+};
 //Function that handles the load of data to GUI
 function loadData() {
     const savedData = localStorage.getItem('expenseTrackerData');
     if (savedData) {
-      data = JSON.parse(savedData);
-      //updateUI(); Future function
+        data = JSON.parse(savedData);
+        //updateUI(); Future function
     }
-  }
+}
 // Function that handles the save of data from GUI
 function saveData() {
     localStorage.setItem('expenseTrackerData', JSON.stringify(data));
+}
+
+// Budget Management (Adding and validating)
+document.getElementById('setBudgetBtn').addEventListener('click', () => {
+    const amount = parseFloat(document.getElementById('budgetAmount').value);
+    const currency = document.getElementById('budgetCurrency').value;
+    if (amount > 0) {
+        data.budget = { amount, currency };
+        //saveData();
+        //updateUI();
+    } else {
+        alert('Please enter a valid budget amount.');
+    }
+});
+
+function updateCategoryList() { //handles update and display of categories
+    const categoryList = document.getElementById('categoryList');
+    const expenseCategory = document.getElementById('expenseCategory');
+    const editExpenseCategory = document.getElementById('editExpenseCategory');
+    categoryList.innerHTML = '';
+    expenseCategory.innerHTML = '';
+    editExpenseCategory.innerHTML = '';
+    data.categories.forEach((category, index) => {
+        categoryList.innerHTML += `<li>${category} <button onclick="deleteCategory(${index})">Delete</button></li>`;
+        expenseCategory.innerHTML += `<option value="${category}">${category}</option>`;
+        editExpenseCategory.innerHTML += `<option value="${category}">${category}</option>`;
+    });
+}
+
+function deleteCategory(index) {
+    const category = data.categories[index];
+    if (data.expenses.some(expense => expense.category === category)) {
+      alert('Cannot delete category with associated expenses.');
+    } else {
+      data.categories.splice(index, 1);
+      saveData();
+      updateUI();
+    }
   }
 const addBudget = `
     <div class=additionContainer>
@@ -60,17 +98,17 @@ mainContent.append(informationElement)
 
 const amounts =
 {
-"total amount": 2000,
-"total expenses": 1000,
-"budget left": 1000
+    "total amount": 2000,
+    "total expenses": 1000,
+    "budget left": 1000
 }
-for (const element in amounts) {
+/*for (const element in amounts) { code not needed anymore
     const textInformationElement = document.createElement('span')
     let informationContent = document.getElementById("informationContainer")
     textInformationElement.innerHTML = informationLabel(element, amounts[element])
     //textInformationElement.innerHTML = informationLabel("Total Expenses", 1000)
     informationContent.append(textInformationElement)
-}
+}*/
 
 //let title = document.getElementById("").append(content)
 
