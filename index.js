@@ -1,8 +1,8 @@
 const addBudget = `
     <div class=additionContainer>
     <h3>Add Budget</h3>
-    <input type="text" id="budget" name="budget">
-    <button>Holiii</button>
+    <input type="text" id="budget" name="budget" placeholder="amount">
+    <button class="button" type="submit">Holiii</button>
     </div>
     `;
 
@@ -20,6 +20,7 @@ const addExpense = `
 const informationBox = `
     <div id=informationContainer></div>
 `
+//This is the component that contains general information of  expenses
 const informationLabel = (label, amount) => {
     return `
     <h4 class=amountLabel>${label} : ${amount} </h4>
