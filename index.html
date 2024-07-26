@@ -20,8 +20,7 @@
         <input type="number" id="budgetAmount" placeholder="Enter budget amount">
         <select id="budgetCurrency">
           <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
+          <option value="CRC">CRC</option>
         </select>
         <button id="setBudgetBtn">Set Budget</button>
       </div>
@@ -37,8 +36,7 @@
         <input type="date" id="expenseDate">
         <select id="expenseCurrency">
           <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
+          <option value="CRC">CRC</option>
         </select>
         <select id="expenseCategory"></select>
         <button id="addExpenseBtn">Add Expense</button>
@@ -51,10 +49,15 @@
         <h3>Expense Summary</h3>
         <div id="summaryContent"></div>
       </div>
+      <div class="additionContainer">
+        <h3>Exchange Rate</h3>
+        <p>1 USD = <span id="exchangeRate">528.63</span> CRC</p>
+        <button id="convertExpensesBtn">Convert All Expenses to CRC</button>
+      </div>
     </div>
   </div>
 
-  <!-- Modal Component -->
+  <!-- Modal Structure -->
   <div id="editExpenseModal" class="modal">
     <div class="modal-content">
       <h3>Edit Expense</h3>
@@ -62,8 +65,7 @@
       <input type="date" id="editExpenseDate">
       <select id="editExpenseCurrency">
         <option value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="GBP">GBP</option>
+        <option value="CRC">CRC</option>
       </select>
       <select id="editExpenseCategory"></select>
       <button id="saveEditBtn">Save Changes</button>
