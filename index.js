@@ -5,6 +5,17 @@ let data = {
     expenses: []
 };
 
+// Fetch exchange rate from the provided API
+async function fetchExchangeRate() {
+    try {
+      const response = await fetch('https://tipodecambio.paginasweb.cr/api');
+      const data = await response.json();
+      exchangeRate = data.venta;
+      document.getElementById('exchangeRate').innerText = exchangeRate;
+    } catch (error) {
+      console.error('Error fetching exchange rate:', error);
+    }
+  }
 
 // **********************Local Storage Management**********************
 //Function that handles the load of data to GUI
@@ -38,32 +49,32 @@ document.getElementById('setBudgetBtn').addEventListener('click', () => {
 document.getElementById('addCategoryBtn').addEventListener('click', () => {
     const categoryName = document.getElementById('categoryName').value.trim();
     if (categoryName && !data.categories.includes(categoryName)) {
-      data.categories.push(categoryName);
-      saveData();
-      updateUI();
-      document.getElementById('categoryName').value = '';
+        data.categories.push(categoryName);
+        saveData();
+        updateUI();
+        document.getElementById('categoryName').value = '';
     } else {
-      alert('Please enter a unique category name.');
+        alert('Please enter a unique category name.');
     }
-  });
+});
 // Expense Management
 document.getElementById('addExpenseBtn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('expenseAmount').value);
     const date = document.getElementById('expenseDate').value;
     const currency = document.getElementById('expenseCurrency').value;
     const category = document.getElementById('expenseCategory').value;
-    
+
     if (amount > 0 && date && category) {
-      data.expenses.push({ amount, date, currency, category });
-      saveData();
-      updateUI();
-      document.getElementById('expenseAmount').value = '';
-      document.getElementById('expenseDate').value = '';
+        data.expenses.push({ amount, date, currency, category });
+        saveData();
+        updateUI();
+        document.getElementById('expenseAmount').value = '';
+        document.getElementById('expenseDate').value = '';
     } else {
-      alert('Please fill in all expense details correctly.');
+        alert('Please fill in all expense details correctly.');
     }
-  });
-  
+});
+
 
 
 function updateCategoryList() { //handles update and display of categories
@@ -83,19 +94,19 @@ function updateCategoryList() { //handles update and display of categories
 function deleteCategory(index) {
     const category = data.categories[index];
     if (data.expenses.some(expense => expense.category === category)) {
-      alert('Cannot delete category with associated expenses.');
+        alert('Cannot delete category with associated expenses.');
     } else {
-      data.categories.splice(index, 1);
-      saveData();
-      updateUI();
+        data.categories.splice(index, 1);
+        saveData();
+        updateUI();
     }
-  }
+}
 
-  function updateExpenseList() {
+function updateExpenseList() {
     const expenseList = document.getElementById('expenses');
     expenseList.innerHTML = '';
     data.expenses.forEach((expense, index) => {
-      expenseList.innerHTML += `
+        expenseList.innerHTML += `
         <li>
           ${expense.amount} ${expense.currency} - ${expense.category} (${expense.date})
           <button onclick="openEditModal(${index})">Edit</button>
@@ -103,7 +114,15 @@ function deleteCategory(index) {
         </li>
       `;
     });
-  }
+}
+
+// Update UI elements
+function updateUI() {
+    updateCategoryList();
+    updateExpenseList();
+    updateExpenseSummary();
+    document.getElementById('exchangeRate').innerText = exchangeRate;
+}
 // **********************Budget Edit**********************
 // Open Edit Modal
 function openEditModal(index) {
@@ -113,11 +132,11 @@ function openEditModal(index) {
     document.getElementById('editExpenseCurrency').value = expense.currency;
     document.getElementById('editExpenseCategory').value = expense.category;
     document.getElementById('editExpenseModal').style.display = 'block';
-  
+
     document.getElementById('saveEditBtn').onclick = function () {
-      saveEdit(index);
+        saveEdit(index);
     };
-  }
+}
 
 // Save Edit
 function saveEdit(index) {
@@ -125,121 +144,74 @@ function saveEdit(index) {
     const newDate = document.getElementById('editExpenseDate').value;
     const newCurrency = document.getElementById('editExpenseCurrency').value;
     const newCategory = document.getElementById('editExpenseCategory').value;
-  
+
     if (newAmount > 0 && newDate && newCurrency && newCategory) {
-      data.expenses[index] = { amount: newAmount, date: newDate, currency: newCurrency, category: newCategory };
-      saveData();
-      updateUI();
-      closeModal();
+        data.expenses[index] = { amount: newAmount, date: newDate, currency: newCurrency, category: newCategory };
+        saveData();
+        updateUI();
+        closeModal();
     } else {
-      alert('Please fill in all expense details correctly.');
+        alert('Please fill in all expense details correctly.');
     }
-  }
+}
 // Close Modal
 function closeModal() {
     document.getElementById('editExpenseModal').style.display = 'none';
-  }
-  
-  document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-  
+}
+
+document.getElementById('closeModalBtn').addEventListener('click', closeModal);
 
 
+
+// Expense Summary
 function updateExpenseSummary() {
     const summaryContent = document.getElementById('summaryContent');
     const categorySums = {};
     let totalExpenses = 0;
-  
+
     data.expenses.forEach(expense => {
-      if (!categorySums[expense.category]) {
-        categorySums[expense.category] = 0;
-      }
-      categorySums[expense.category] += expense.amount;
-      totalExpenses += expense.amount;
+        if (!categorySums[expense.category]) {
+            categorySums[expense.category] = 0;
+        }
+        categorySums[expense.category] += expense.amount;
+        totalExpenses += expense.amount;
     });
-  
+
     let summaryHTML = `<p>Total Expenses: ${totalExpenses} ${data.budget.currency}</p>`;
     summaryHTML += '<ul>';
     for (const [category, sum] of Object.entries(categorySums)) {
-      summaryHTML += `<li>${category}: ${sum} ${data.budget.currency}</li>`;
+        summaryHTML += `<li>${category}: ${sum} ${data.budget.currency}</li>`;
     }
     summaryHTML += '</ul>';
-  
+
     if (totalExpenses > data.budget.amount) {
-      summaryHTML += '<p style="color: red;">Warning: Budget exceeded!</p>';
+        summaryHTML += '<p style="color: red;">Warning: Budget exceeded!</p>';
     }
-  
+
     summaryContent.innerHTML = summaryHTML;
-  }
-/*const addBudget = `
-    <div class=additionContainer>
-    <h3>Add Budget</h3>
-    <input type="text" id="budget" name="budget" placeholder="amount">
-    <button class="button" type="submit">Holiii</button>
-    </div>
-    `;
-
-const addExpense = `
-    <div class=additionContainer>
-        <h3>Add Expense<h3/>
-        <label for="expenseTitle">Expense Title:</label>
-        <input type="text" id="fname" name="expenseTitle">
-        <label for="amount">Amount:</label>
-        <input type="text" id="fname" name="amount">
-        <button class="button" type="submit">Add Expense</button>
-    <div/>
-`
-
-const informationBox = `
-    <div id=informationContainer></div>
-`
-//This is the component that contains general information of  expenses
-const informationLabel = (label, amount) => {
-    return `
-    <h4 class=amountLabel>${label} : ${amount} </h4>
-    `
 }
-let mainContent = document.getElementById("mainContent")
-const addBudgetElement = document.createElement('span') //TODO: guardar estas lineas de codigo para despues, ya que son las que resuelven el tema de agregar elementos a otros divs
-const addExpenseElement = document.createElement('span')
-const informationElement = document.createElement('span')
 
-
-addBudgetElement.innerHTML = addBudget;
-addExpenseElement.innerHTML = addExpense;
-informationElement.innerHTML = informationBox;
-
-mainContent.append(addBudgetElement)
-mainContent.append(addExpenseElement)
-mainContent.append(informationElement)
-
-const amounts =
-{
-    "total amount": 2000,
-    "total expenses": 1000,
-    "budget left": 1000
-}
-/*for (const element in amounts) { code not needed anymore
-    const textInformationElement = document.createElement('span')
-    let informationContent = document.getElementById("informationContainer")
-    textInformationElement.innerHTML = informationLabel(element, amounts[element])
-    //textInformationElement.innerHTML = informationLabel("Total Expenses", 1000)
-    informationContent.append(textInformationElement)
-}*/
-
-//let title = document.getElementById("").append(content)
-
-// select the element with a class called root
-/*
-const root = document.querySelector('.root')
-// attach a shadow DOM to the selected element
-root.attachShadow({ mode: 'open' })
-// append the html element to the shadow DOM
-root.shadowRoot.appendChild(htmlSection)*/
+// Convert all expenses to CRC
+document.getElementById('convertExpensesBtn').addEventListener('click', () => {
+    data.expenses = data.expenses.map(expense => {
+        if (expense.currency === 'USD') {
+            return {
+                ...expense,
+                amount: expense.amount * exchangeRate,
+                currency: 'CRC'
+            };
+        }
+        return expense;
+    });
+    saveData();
+    updateUI();
+});
 // Update UI elements
 function updateUI() {
     updateCategoryList();
     updateExpenseList();
     updateExpenseSummary();
-  }
-  loadData();
-  updateUI();
+}
+loadData();
+updateUI();
+fetchExchangeRate();
