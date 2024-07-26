@@ -255,3 +255,8 @@
   button:hover {
     background-color: var(--purpureus);
   }
+#themeSwitcher{
+    width: 65%;
+    box-shadow: 5px 5px 25px 1px var(--purpureus);
+    border-radius: 5px;
+}
