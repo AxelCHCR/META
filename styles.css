@@ -8,36 +8,36 @@
     --ghost-white: #F1F2F9;
     --main-font: 'Courier New', Courier, monospace;  
     --soft-violet: #695FAB;
-}
-
-body {
+  }
+  
+  body {
     background-color: var(--lilac);
     margin: 0;
     padding: 0;
     font-family: var(--main-font);
     transition: background-color 1s ease-out;
   }
-
-#rootContainer {
+  
+  #rootContainer {
     display: flex;
     flex-direction: column;
     align-items: center; 
     justify-content: center;
     text-align: center;
     padding: 20px;
-}
-
-#appTitle {
+  }
+  
+  #appTitle {
     color: var(--ultra-violet);
     font-size: 1.5rem;
     margin-bottom: 20px;
-}
-
-.titleAcronym {
+  }
+  
+  .titleAcronym {
     color: var(--space-cadet);
-}
-
-#mainContent {
+  }
+  
+  #mainContent {
     background-color: var(--tea-rose);
     width: 90%;
     max-width: 1200px;
@@ -51,7 +51,7 @@ body {
     padding: 20px;
     box-sizing: border-box;
   }
-
+  
   .additionContainer {
     display: flex;
     flex-direction: column;
@@ -64,14 +64,17 @@ body {
     min-height: 200px;
     box-sizing: border-box;
   }
-
-.additionContainer input[type=text] { 
+  
+  .additionContainer input[type=text],
+  .additionContainer input[type=number],
+  .additionContainer input[type=date],
+  .additionContainer select { 
     width: 100%;
     padding: 5px;
     box-sizing: border-box;
-}
-
-button {
+  }
+  
+  button {
     border: none;
     padding: 10px;
     font-family: var(--main-font);
@@ -82,54 +85,45 @@ button {
     transition: 0.3s all;
     width: 100%;
     box-sizing: border-box;
-}
-
-button:hover {
+  }
+  
+  button:hover {
     background-color: var(--purpureus);
-}
-
-#informationContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 600px;
+  }
+  
+  #expenseSummary {
     background-color: var(--ultra-violet);
     padding: 15px;
     box-sizing: border-box;
     border-radius: 5px;
-}
-
-.amountLabel {
-    color: var(--ghost-white);
-    margin: 5px 0;
-}
-
-@media only screen and (min-width: 768px) {
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  @media only screen and (min-width: 768px) {
     #appTitle {
-        font-size: 2rem;
+      font-size: 2rem;
     }
-
+  
     #mainContent {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-      }
-
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  
     .additionContainer {
-        width: calc(50% - 10px);
-      }
-
-    #informationContainer {
-        flex-direction: row;
-        flex-wrap: wrap;
+      width: calc(50% - 10px);
     }
-
-    .amountLabel {
-        width: calc(33.33% - 10px);
-    }
-}
-@keyframes fadeIn {
+  }
+  
+  @keyframes fadeIn {
     from {
       opacity: 0;
       transform: translateY(-20px);
@@ -143,7 +137,8 @@ button:hover {
   .fade-in {
     animation: fadeIn 2s ease-out;
   }
-  .additionContainer, #informationContainer {
+  
+  .additionContainer {
     animation: fadeInUp 1.5s ease-out backwards;
   }
   
@@ -155,6 +150,55 @@ button:hover {
     animation-delay: 1.7s;
   }
   
-  #informationContainer {
+  .additionContainer:nth-child(3) {
     animation-delay: 1.9s;
+  }
+  
+  .additionContainer:nth-child(4) {
+    animation-delay: 2.1s;
+  }
+  
+  .additionContainer:nth-child(5) {
+    animation-delay: 2.3s;
+  }
+  /* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  .modal-content {
+    background-color: var(--tea-rose);
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid var(--ultra-violet);
+    width: 80%;
+    max-width: 500px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 25px 1px var(--purpureus);
+  }
+  
+  button {
+    border: none;
+    padding: 10px;
+    font-family: var(--main-font);
+    font-weight: 600;
+    background-color: var(--soft-violet);
+    color: var(--ghost-white);
+    cursor: pointer;
+    transition: 0.3s all;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  button:hover {
+    background-color: var(--purpureus);
   }
