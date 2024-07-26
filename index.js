@@ -12,7 +12,7 @@ function loadData() {
     const savedData = localStorage.getItem('expenseTrackerData');
     if (savedData) {
         data = JSON.parse(savedData);
-        //updateUI(); Future function
+        updateUI();
     }
 }
 // Function that handles the save of data from GUI
@@ -29,7 +29,7 @@ document.getElementById('setBudgetBtn').addEventListener('click', () => {
     if (amount > 0) {
         data.budget = { amount, currency };
         saveData();
-        //updateUI();
+        updateUI();
     } else {
         alert('Please enter a valid budget amount.');
     }
@@ -87,7 +87,7 @@ function deleteCategory(index) {
     } else {
       data.categories.splice(index, 1);
       saveData();
-      //updateUI();
+      updateUI();
     }
   }
 
@@ -141,6 +141,7 @@ function closeModal() {
   }
   
   document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+  
 
 
 function updateExpenseSummary() {
@@ -169,7 +170,7 @@ function updateExpenseSummary() {
   
     summaryContent.innerHTML = summaryHTML;
   }
-const addBudget = `
+/*const addBudget = `
     <div class=additionContainer>
     <h3>Add Budget</h3>
     <input type="text" id="budget" name="budget" placeholder="amount">
@@ -234,3 +235,11 @@ const root = document.querySelector('.root')
 root.attachShadow({ mode: 'open' })
 // append the html element to the shadow DOM
 root.shadowRoot.appendChild(htmlSection)*/
+// Update UI elements
+function updateUI() {
+    updateCategoryList();
+    updateExpenseList();
+    updateExpenseSummary();
+  }
+  loadData();
+  updateUI();

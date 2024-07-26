@@ -21,7 +21,7 @@
         <select id="budgetCurrency">
           <option value="USD">USD</option>
           <option value="EUR">EUR</option>
-          <option value="GBP">CRC</option>
+          <option value="GBP">GBP</option>
         </select>
         <button id="setBudgetBtn">Set Budget</button>
       </div>
@@ -53,6 +53,24 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Component -->
+  <div id="editExpenseModal" class="modal">
+    <div class="modal-content">
+      <h3>Edit Expense</h3>
+      <input type="number" id="editExpenseAmount" placeholder="Enter new amount">
+      <input type="date" id="editExpenseDate">
+      <select id="editExpenseCurrency">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+      </select>
+      <select id="editExpenseCategory"></select>
+      <button id="saveEditBtn">Save Changes</button>
+      <button id="closeModalBtn">Close</button>
+    </div>
+  </div>
+
   <script src="index.js"></script>
 </body>
 
