@@ -10,6 +10,18 @@
     --soft-violet: #695FAB;
   }
   
+  [data-theme="dark"] {
+    --oxford-blue: #011638;
+    --space-cadet: #2E294E;
+    --purpureus: #9055A2;
+    --lilac: #333;
+    --tea-rose: #444;
+    --ultra-violet: #4F4686;
+    --ghost-white: #F1F2F9;
+    --main-font: 'Courier New', Courier, monospace;  
+    --soft-violet: #695FAB;
+  }
+  
   body {
     background-color: var(--lilac);
     margin: 0;
