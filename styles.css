@@ -73,6 +73,8 @@ button{
 }
 #informationContainer{
     display: flex;
+    flex-flow: row;
+    justify-content: space-between;
     width: 40vw;
     height: 50vh;
     margin-top: 5vh;
@@ -86,8 +88,20 @@ label{
 @media only screen and (max-width: 768px) {
     #mainContent {
         display: flex;
-        flex-flow: column;
-
+        flex-flow: column nowrap;
+        justify-content: flex-start ;
+        align-items: center;
+        
+    }
+    #informationContainer{
+        height: 20vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .additionContainer{
+        height: 90%;
+        width: 50%;
     }
   }
 

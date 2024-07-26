@@ -17,7 +17,7 @@ const addExpense = `
     <div/>
 `
 const informationBox = `
-    <div id=informationContainer>Soy una cajota</div>
+    <div id=informationContainer></div>
 `
 const informationLabel = (label, amount) => {
     return `
