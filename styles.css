@@ -8,103 +8,123 @@
     --ghost-white: #F1F2F9;
     --main-font: 'Courier New', Courier, monospace;  
     --soft-violet: #695FAB;
-
 }
-#rootContainer{
+
+body {
+    background-color: var(--lilac);
+    margin: 0;
+    padding: 0;
+    font-family: var(--main-font);
+}
+
+#rootContainer {
     display: flex;
     flex-direction: column;
     align-items: center; 
     justify-content: center;
     text-align: center;
-}
-#mainContent {
-    background-color: var(--tea-rose);
-    width: 80%;
-    display: flex;
-    flex-flow: column wrap;
-    height: 70vh;
-    justify-content: center;
-    align-items: flex-start;
-    position: relative;
-    gap: 20px;
-    border-radius: 5px;
-    box-shadow: 5px 5px 25px 1px var(--purpureus);
-    min-width: 60%;
-}
-
-body {
-    background-color: var(--lilac);
-}
-
-.titleAcronym {
-    color: var(--space-cadet)
+    padding: 20px;
 }
 
 #appTitle {
     color: var(--ultra-violet);
-    font-family: var(--main-font)
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
 
+.titleAcronym {
+    color: var(--space-cadet);
 }
-.additionContainer{
+
+#mainContent {
+    background-color: var(--tea-rose);
+    width: 90%;
+    max-width: 1200px;
     display: flex;
-    flex-flow: column nowrap;
-    gap: 3px;  
-    background-color: var(--ultra-violet);
-    color:var(--ghost-white);
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
     border-radius: 5px;
-    padding: 10px;
-    width: 10vw;
-    font-family: var(--main-font);
-    margin-left: 8%;
+    box-shadow: 5px 5px 25px 1px var(--purpureus);
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .additionContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;  
+    background-color: var(--ultra-violet);
+    color: var(--ghost-white);
+    border-radius: 5px;
+    padding: 15px;
+    flex: 1;
+    min-height: 200px; /* Establece una altura mínima */
+    box-sizing: border-box;
+  }
+
+.additionContainer input[type=text] { 
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
 }
-.additionContainer input[type=text]{ 
-    max-width: 70%;
-}
-button{
+
+button {
     border: none;
-    width: 8vw;
+    padding: 10px;
     font-family: var(--main-font);
     font-weight: 600;
     background-color: var(--soft-violet);
-    max-width: 70%;
-    min-width: 30%;
-    transition: 0.5s all;
-    overflow:auto;
-}
-#informationContainer{
-    display: flex;
-    flex-flow: row;
-    justify-content: space-between;
-    width: 40vw;
-    height: 50vh;
-    margin-top: 5vh;
-    background-color: var(--ultra-violet);
-}
-label{
-    text-align: justify;
-    vertical-align: baseline;
-}
-
-@media only screen and (max-width: 768px) {
-    #mainContent {
-        display: flex;
-        flex-flow: column nowrap;
-        justify-content: flex-start ;
-        align-items: center;
-        
-    }
-    #informationContainer{
-        height: 20vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .additionContainer{
-        height: 90%;
-        width: 50%;
-    }
-  }
-
-.amountLabel{
     color: var(--ghost-white);
+    cursor: pointer;
+    transition: 0.3s all;
+    width: 100%; /* Asegura que el botón ocupe todo el ancho disponible */
+    box-sizing: border-box;
+}
+
+button:hover {
+    background-color: var(--purpureus);
+}
+
+#informationContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 600px;
+    background-color: var(--ultra-violet);
+    padding: 15px;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+.amountLabel {
+    color: var(--ghost-white);
+    margin: 5px 0;
+}
+
+@media only screen and (min-width: 768px) {
+    #appTitle {
+        font-size: 2rem;
+    }
+
+    #mainContent {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+    .additionContainer {
+        width: calc(50% - 10px); /* Ajusta el ancho para dos columnas con un pequeño espacio entre ellas */
+      }
+
+    #informationContainer {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .amountLabel {
+        width: calc(33.33% - 10px);
+    }
 }

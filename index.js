@@ -16,6 +16,7 @@ const addExpense = `
         <button class="button" type="submit">Add Expense</button>
     <div/>
 `
+
 const informationBox = `
     <div id=informationContainer></div>
 `
