@@ -1,214 +1,109 @@
-//**********************Data structure (JSON). It contains the budget, the categories and the expenses used in META application**********************   
 let data = {
     budget: { amount: 0, currency: 'USD' },
     categories: [],
     expenses: []
-};
-
-// Fetch exchange rate from the provided API
-async function fetchExchangeRate() {
+  };
+  
+  // Fetch exchange rate from the provided API
+  async function fetchExchangeRate() {
     try {
       const response = await fetch('https://tipodecambio.paginasweb.cr/api');
-      const data = await response.json();
-      exchangeRate = data.venta;
+      const exchangeData = await response.json();
+      exchangeRate = exchangeData.venta;
       document.getElementById('exchangeRate').innerText = exchangeRate;
     } catch (error) {
       console.error('Error fetching exchange rate:', error);
     }
   }
-
-// **********************Local Storage Management**********************
-//Function that handles the load of data to GUI
-function loadData() {
+  
+  // Local Storage Management
+  function loadData() {
     const savedData = localStorage.getItem('expenseTrackerData');
     if (savedData) {
-        data = JSON.parse(savedData);
-        updateUI();
+      data = JSON.parse(savedData);
+      updateUI();
     }
-}
-// Function that handles the save of data from GUI
-function saveData() {
+  }
+  
+  function saveData() {
     localStorage.setItem('expenseTrackerData', JSON.stringify(data));
-}
-
-
-//**********************DOM manipulation of events**********************
-// Budget Management (Adding and validating)
-document.getElementById('setBudgetBtn').addEventListener('click', () => {
+  }
+  
+  // Event Listeners
+  document.getElementById('setBudgetBtn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('budgetAmount').value);
     const currency = document.getElementById('budgetCurrency').value;
     if (amount > 0) {
-        data.budget = { amount, currency };
-        saveData();
-        updateUI();
+      data.budget = { amount, currency };
+      saveData();
+      updateUI();
     } else {
-        alert('Please enter a valid budget amount.');
+      alert('Please enter a valid budget amount.');
     }
-});
-// Category Management
-document.getElementById('addCategoryBtn').addEventListener('click', () => {
+  });
+  
+  document.getElementById('addCategoryBtn').addEventListener('click', () => {
     const categoryName = document.getElementById('categoryName').value.trim();
     if (categoryName && !data.categories.includes(categoryName)) {
-        data.categories.push(categoryName);
-        saveData();
-        updateUI();
-        document.getElementById('categoryName').value = '';
+      data.categories.push(categoryName);
+      saveData();
+      updateUI();
+      document.getElementById('categoryName').value = '';
     } else {
-        alert('Please enter a unique category name.');
+      alert('Please enter a unique category name.');
     }
-});
-// Expense Management
-document.getElementById('addExpenseBtn').addEventListener('click', () => {
+  });
+  
+  document.getElementById('addExpenseBtn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('expenseAmount').value);
     const date = document.getElementById('expenseDate').value;
     const currency = document.getElementById('expenseCurrency').value;
     const category = document.getElementById('expenseCategory').value;
-
     if (amount > 0 && date && category) {
-        data.expenses.push({ amount, date, currency, category });
-        saveData();
-        updateUI();
-        document.getElementById('expenseAmount').value = '';
-        document.getElementById('expenseDate').value = '';
+      data.expenses.push({ amount, date, currency, category });
+      saveData();
+      updateUI();
+      document.getElementById('expenseAmount').value = '';
+      document.getElementById('expenseDate').value = '';
     } else {
-        alert('Please fill in all expense details correctly.');
+      alert('Please fill in all expense details correctly.');
     }
-});
-
-
-
-function updateCategoryList() { //handles update and display of categories
-    const categoryList = document.getElementById('categoryList');
-    const expenseCategory = document.getElementById('expenseCategory');
-    const editExpenseCategory = document.getElementById('editExpenseCategory');
-    categoryList.innerHTML = '';
-    expenseCategory.innerHTML = '';
-    editExpenseCategory.innerHTML = '';
-    data.categories.forEach((category, index) => {
-        categoryList.innerHTML += `<li>${category} <button onclick="deleteCategory(${index})">Delete</button></li>`;
-        expenseCategory.innerHTML += `<option value="${category}">${category}</option>`;
-        editExpenseCategory.innerHTML += `<option value="${category}">${category}</option>`;
-    });
-}
-
-function deleteCategory(index) {
-    const category = data.categories[index];
-    if (data.expenses.some(expense => expense.category === category)) {
-        alert('Cannot delete category with associated expenses.');
-    } else {
-        data.categories.splice(index, 1);
-        saveData();
-        updateUI();
-    }
-}
-
-function updateExpenseList() {
-    const expenseList = document.getElementById('expenses');
-    expenseList.innerHTML = '';
-    data.expenses.forEach((expense, index) => {
-        expenseList.innerHTML += `
-        <li>
-          ${expense.amount} ${expense.currency} - ${expense.category} (${expense.date})
-          <button onclick="openEditModal(${index})">Edit</button>
-          <button onclick="deleteExpense(${index})">Delete</button>
-        </li>
-      `;
-    });
-}
-
-// Update UI elements
-function updateUI() {
-    updateCategoryList();
-    updateExpenseList();
-    updateExpenseSummary();
-    document.getElementById('exchangeRate').innerText = exchangeRate;
-}
-// **********************Budget Edit**********************
-// Open Edit Modal
-function openEditModal(index) {
-    const expense = data.expenses[index];
-    document.getElementById('editExpenseAmount').value = expense.amount;
-    document.getElementById('editExpenseDate').value = expense.date;
-    document.getElementById('editExpenseCurrency').value = expense.currency;
-    document.getElementById('editExpenseCategory').value = expense.category;
-    document.getElementById('editExpenseModal').style.display = 'block';
-
-    document.getElementById('saveEditBtn').onclick = function () {
-        saveEdit(index);
+  });
+  
+  document.getElementById('uploadJSON').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      data = JSON.parse(e.target.result);
+      saveData();  // Guarda los datos en el local storage
+      updateUI();  // Actualiza la interfaz de usuario
     };
-}
-
-// Save Edit
-function saveEdit(index) {
-    const newAmount = parseFloat(document.getElementById('editExpenseAmount').value);
-    const newDate = document.getElementById('editExpenseDate').value;
-    const newCurrency = document.getElementById('editExpenseCurrency').value;
-    const newCategory = document.getElementById('editExpenseCategory').value;
-
-    if (newAmount > 0 && newDate && newCurrency && newCategory) {
-        data.expenses[index] = { amount: newAmount, date: newDate, currency: newCurrency, category: newCategory };
-        saveData();
-        updateUI();
-        closeModal();
-    } else {
-        alert('Please fill in all expense details correctly.');
-    }
-}
-// Close Modal
-function closeModal() {
-    document.getElementById('editExpenseModal').style.display = 'none';
-}
-
-document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-
-
-
-// Expense Summary
-function updateExpenseSummary() {
-    const summaryContent = document.getElementById('summaryContent');
-    const categorySums = {};
-    let totalExpenses = 0;
-
-    data.expenses.forEach(expense => {
-        if (!categorySums[expense.category]) {
-            categorySums[expense.category] = 0;
-        }
-        categorySums[expense.category] += expense.amount;
-        totalExpenses += expense.amount;
-    });
-
-    let summaryHTML = `<p>Total Expenses: ${totalExpenses} ${data.budget.currency}</p>`;
-    summaryHTML += '<ul>';
-    for (const [category, sum] of Object.entries(categorySums)) {
-        summaryHTML += `<li>${category}: ${sum} ${data.budget.currency}</li>`;
-    }
-    summaryHTML += '</ul>';
-
-    if (totalExpenses > data.budget.amount) {
-        summaryHTML += '<p style="color: red;">Warning: Budget exceeded!</p>';
-    }
-
-    summaryContent.innerHTML = summaryHTML;
-}
-
-// Convert all expenses to CRC
-document.getElementById('convertExpensesBtn').addEventListener('click', () => {
+    reader.readAsText(file);
+  });
+  
+  document.getElementById('downloadJSONBtn').addEventListener('click', function() {
+    const dataStr = JSON.stringify(data, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+  
+  document.getElementById('convertExpensesBtn').addEventListener('click', () => {
     data.expenses = data.expenses.map(expense => {
-        if (expense.currency === 'USD') {
-            return {
-                ...expense,
-                amount: expense.amount * exchangeRate,
-                currency: 'CRC'
-            };
-        }
-        return expense;
+      if (expense.currency === 'USD') {
+        return { ...expense, amount: expense.amount * exchangeRate, currency: 'CRC' };
+      }
+      return expense;
     });
     saveData();
     updateUI();
-});
-
-// Theme switcher
-document.getElementById('themeSwitcher').addEventListener('click', () => {
+  });
+  
+  document.getElementById('themeSwitcher').addEventListener('click', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
@@ -219,17 +114,48 @@ document.getElementById('themeSwitcher').addEventListener('click', () => {
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
   }
-
-  document.getElementById('uploadJSON').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      data = JSON.parse(e.target.result);
-      updateUI();
-    };
-    reader.readAsText(file);
-  });
-
+  
+  function updateUI() {
+    updateCategoryList();
+    updateExpenseList();
+    updateExpenseSummary();
+    createBarChart();
+    createPieChart();
+  }
+  
+  function updateCategoryList() {
+    const categoryList = document.getElementById('categoryList');
+    const expenseCategory = document.getElementById('expenseCategory');
+    const editExpenseCategory = document.getElementById('editExpenseCategory');
+    categoryList.innerHTML = '';
+    expenseCategory.innerHTML = '';
+    editExpenseCategory.innerHTML = '';
+    data.categories.forEach((category, index) => {
+      categoryList.innerHTML += `<li>${category} <button onclick="removeCategory(${index})">Remove</button></li>`;
+      expenseCategory.innerHTML += `<option value="${category}">${category}</option>`;
+      editExpenseCategory.innerHTML += `<option value="${category}">${category}</option>`;
+    });
+  }
+  
+  function updateExpenseList() {
+    const expenses = document.getElementById('expenses');
+    expenses.innerHTML = '';
+    data.expenses.forEach((expense, index) => {
+      expenses.innerHTML += `<li>${expense.date} - ${expense.category} - ${expense.amount} ${expense.currency} <button onclick="editExpense(${index})">Edit</button> <button onclick="removeExpense(${index})">Remove</button></li>`;
+    });
+  }
+  
+  function updateExpenseSummary() {
+    const summaryContent = document.getElementById('summaryContent');
+    let totalExpenses = data.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    let summaryHTML = `<p>Total Budget: ${data.budget.amount} ${data.budget.currency}</p>`;
+    summaryHTML += `<p>Total Expenses: ${totalExpenses} ${data.budget.currency}</p>`;
+    if (totalExpenses > data.budget.amount) {
+      summaryHTML += '<p style="color: red;">Warning: Budget exceeded!</p>';
+    }
+    summaryContent.innerHTML = summaryHTML;
+  }
+  
   function createBarChart() {
     const ctx = document.getElementById('barChart').getContext('2d');
     new Chart(ctx, {
@@ -300,20 +226,10 @@ document.getElementById('themeSwitcher').addEventListener('click', () => {
       }
     });
   }
-
-  document.getElementById('downloadJSONBtn').addEventListener('click', function() {
-    const dataStr = JSON.stringify(data, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'data.json';
-    a.click();
-    URL.revokeObjectURL(url);
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    loadData();
+    updateUI();
+    fetchExchangeRate();
+    loadTheme();
   });
-loadData();
-updateUI();
-fetchExchangeRate();
-loadTheme();
-createBarChart();
-createPieChart();
