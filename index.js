@@ -300,6 +300,17 @@ document.getElementById('themeSwitcher').addEventListener('click', () => {
       }
     });
   }
+
+  document.getElementById('downloadJSONBtn').addEventListener('click', function() {
+    const dataStr = JSON.stringify(data, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
 loadData();
 updateUI();
 fetchExchangeRate();
