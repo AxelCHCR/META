@@ -29,7 +29,6 @@ function saveData() {
     localStorage.setItem('expenseTrackerData', JSON.stringify(data));
 }
 
-// Event Listeners
 document.getElementById('setBudgetBtn').addEventListener('click', () => {
     const amount = parseFloat(document.getElementById('budgetAmount').value);
     const currency = document.getElementById('budgetCurrency').value;
@@ -75,8 +74,8 @@ document.getElementById('uploadJSON').addEventListener('change', function (event
     const reader = new FileReader();
     reader.onload = function (e) {
         data = JSON.parse(e.target.result);
-        saveData();  // Guarda los datos en el local storage
-        updateUI();  // Actualiza la interfaz de usuario
+        saveData();  // Save data on local storage
+        updateUI();  
     };
     reader.readAsText(file);
 });
@@ -197,17 +196,16 @@ function deleteCategory(index) {
     }
 }
 function editExpense(index) {
-    // Lógica para editar el gasto
+
     const expense = data.expenses[index];
     document.getElementById('editExpenseAmount').value = expense.amount;
     document.getElementById('editExpenseDate').value = expense.date;
     document.getElementById('editExpenseCurrency').value = expense.currency;
     document.getElementById('editExpenseCategory').value = expense.category;
     
-    // Mostrar el modal de edición
+    // Show edit modal
     document.getElementById('editExpenseModal').style.display = 'block';
     
-    // Guardar los cambios
     document.getElementById('saveEditBtn').onclick = function() {
       expense.amount = parseFloat(document.getElementById('editExpenseAmount').value);
       expense.date = document.getElementById('editExpenseDate').value;
@@ -327,6 +325,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
     updateUI();
 
-    setInterval(fetchExchangeRate, 1);  // Actualiza cada 10 minutos
+    setInterval(fetchExchangeRate, 60000);  //Updates every 10 minutes
     loadTheme();
 });
