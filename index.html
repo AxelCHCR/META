@@ -59,6 +59,16 @@
         <p>1 USD = <span id="exchangeRate">0.00</span> CRC</p>
         <button id="convertExpensesBtn">Convert All Expenses to CRC</button>
       </div>
+      <div class="additionContainer">
+        <h3>Data Management</h3>
+        <input type="file" id="uploadJSON" accept=".json">
+        <button id="downloadJSONBtn">Download JSON</button>
+      </div>
+      <div class="additionContainer">
+        <h3>Visualizations</h3>
+        <canvas id="barChart"></canvas>
+        <canvas id="pieChart"></canvas>
+      </div>
     </div>
   </div>
 
@@ -77,8 +87,9 @@
       <button id="closeModalBtn">Close</button>
     </div>
   </div>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="index.js"></script>
+
 </body>
 
 </html>
