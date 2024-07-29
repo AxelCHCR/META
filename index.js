@@ -121,11 +121,6 @@ function updateUI() {
     updateCategoryList();
     updateExpenseList();
     updateExpenseSummary();
-    updateCategoryList();
-    updateExpenseList();
-    updateExpenseSummary();
-    createBarChart();
-    createPieChart();
     document.getElementById('exchangeRate').innerText = exchangeRate;
 }
 // **********************Budget Edit**********************
@@ -219,11 +214,12 @@ document.getElementById('themeSwitcher').addEventListener('click', () => {
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
   });
-   
+  
   function loadTheme() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
   }
+
   document.getElementById('uploadJSON').addEventListener('change', function(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -232,17 +228,6 @@ document.getElementById('themeSwitcher').addEventListener('click', () => {
       updateUI();
     };
     reader.readAsText(file);
-  });
-  
-  document.getElementById('downloadJSONBtn').addEventListener('click', function() {
-    const dataStr = JSON.stringify(data, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'data.json';
-    a.click();
-    URL.revokeObjectURL(url);
   });
 
   function createBarChart() {
@@ -319,3 +304,5 @@ loadData();
 updateUI();
 fetchExchangeRate();
 loadTheme();
+createBarChart();
+createPieChart();
